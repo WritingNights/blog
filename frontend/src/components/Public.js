@@ -72,7 +72,7 @@ class Public extends React.Component {
     const chainMap = this.filterChain();
     const displayChain = chainMap.map((obj, i, arr) => {
       const user = users.filter(obj => obj.id === arr[i].author)[0];
-      return (<Link to={"/blog/" + arr[i].id} className="blog" key={i}>
+      return (<Link to={"/blog/" + arr[i].id} className="blog" key={i} style={this.state.display === 'small' ? {aspectRatio: '1/1'} : this.state.display === 'half' ? {aspectRatio: '2/1'} : {aspectRatio: '3/1'}}>
         <h3>{arr[i].title}</h3>
         <div className="bottomMatter">
           <span>{user.username}</span>

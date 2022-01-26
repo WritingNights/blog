@@ -22,7 +22,7 @@ const chain = [{
     id: 3,
     title: 'Daniel\'s Writing Blog',
     author: 2,
-    description: '',
+    description: 'This is my blog focused on the craft and content of writing',
     content: [7, 8],
     likes: 1,
     views: 2,

@@ -71,6 +71,43 @@ main {
   align-items: center;
 }
 
+.mainLink {
+  padding-left: 10px;
+  text-decoration: none;
+  display: flex;
+}
+
+.mainLink > div {
+  display: flex;
+  flex-direction: row;
+  transition: .4s ease;
+}
+
+.mainLink:hover > div {
+  transform: scale(1.1);
+  transition: .4s ease;
+}
+
+.mainWords {
+  padding: 0 .25em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  color: black;
+  line-height: 1em;
+}
+
+.wordMain {
+  --borderColor: #fc8059;
+  text-shadow: 2px 0 0 var(--borderColor), -2px 0 0 var(--borderColor), 0 2px 0 var(--borderColor), 0 -2px 0 var(--borderColor), 1px 1px var(--borderColor), -1px -1px 0 var(--borderColor), 1px -1px 0 var(--borderColor), -1px 1px 0 var(--borderColor);
+}
+
+.wordPage {
+  --borderColor: #fcc159;
+  text-shadow: 2px 0 0 var(--borderColor), -2px 0 0 var(--borderColor), 0 2px 0 var(--borderColor), 0 -2px 0 var(--borderColor), 1px 1px var(--borderColor), -1px -1px 0 var(--borderColor), 1px -1px 0 var(--borderColor), -1px 1px 0 var(--borderColor);
+}
+
 .loggedBlock {
   display: flex;
   flex-direction: column;
@@ -119,6 +156,7 @@ main {
   border: none;
   background-color: transparent;
   font-size: .9em;
+  cursor: pointer;
 }
 
 #sort-nav button:focus, .sort-nav-bottom button:focus {
@@ -131,6 +169,7 @@ main {
   display: flex;
   align-items: center;
   margin: 0 20px;
+  cursor: pointer;
 }
 
 /* public view */
@@ -154,15 +193,23 @@ main {
 .blog {
   margin: 5px;
   padding: 5px;
+  background: linear-gradient(90deg, tomato 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border-radius: 10px;
   color: black;
   text-decoration: none;
   border: 2px solid black;
   box-shadow: inset 0 0 4px rgba(255, 99, 71, 0.7), 0 0 2px rgba(0, 0, 0, 0.5);
+  transition: .3s ease;
 }
 
 .blog:hover, .blog:focus {
-  background-color: tomato;
+  background-position: 0 0;
+  transition: .3s ease;
 }
 
 .blog h3 {
@@ -209,6 +256,7 @@ main {
 
 .aside-x, #public-aside-menu {
   margin: 2px;
+  cursor: pointer;
 }
 
 .aside-x {
@@ -243,6 +291,7 @@ main {
 .radio-btns div span {
   padding: 3px;
   border-radius: 5px 5px 0 0;
+  cursor: pointer;
 }
 
 /* Blog */
@@ -275,10 +324,9 @@ main {
 }
 
 #blog-home section {
-  height: 70%;
-  width: 62em;
-  min-width: 90%;
-  max-width: 90%;
+  width: 90%;
+  max-width: 90vw;
+  aspect-ratio: 2.5 / 1;
   padding: 0 .5em;
   display: flex;
   flex-direction: row;
@@ -292,31 +340,37 @@ main {
 }
 
 .post-container {
-  min-width: 28%;
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: center;
 }
 
 .post-link {
   height: 90%;
-  min-height: 18em;
-  width: 90%;
-  min-width: 10em;
+  aspect-ratio: 1 / 1.5;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
   background-color: tomato;
   color: black;
   text-decoration: none;
-  white-space: nowrap;
   transition: .5s ease;
 }
 
 .post-link:hover, .post-link:focus {
   transform: translateY(-10px);
   transition: .2s ease;
+}
+
+.post-link span {
+  font-size: 1.25em;
+  padding-left: 6px;
+  white-space: nowrap;
+}
+
+.post-link p {
+  font-size: .9em;
 }
 
 /* media queries */
@@ -326,6 +380,10 @@ main {
     .login-form input[type="text"], .login-form input[type="password"] {
       padding: 7px 5px 3px;
       font-size: 1.1em;
+    }
+
+    .post-container {
+      min-width: 28%;
     }
   }
 
@@ -348,6 +406,16 @@ main {
     }
 
     #blog-home section {
-      width: 98%
+      aspect-ratio: 1.25 / 1.25;
+    }
+
+    .post-container {
+      aspect-ratio: .7 / 1;
+      min-width: unset;
+      height: 100%;
+    }
+
+    .post-link {
+      aspect-ratio: .65 / 1;
     }
   }
