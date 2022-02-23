@@ -1,41 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
+import BlogDataService from "../services/blog";
 
-import chain from './data/blogChain-data';
-import users from './data/userChain-data';
+import Aside from "./Aside";
 
 class Public extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      aside: false,
       recent: null,
       views: null,
       likes: null,
       display: 'half',
-      search: true
+      search: true,
+      filter: '',
+      maxWidth: '',
+      blogs: {}
     };
 
-    this.change = this.change.bind(this);
+    this.ref = React.createRef();
+
     this.keyPress = this.keyPress.bind(this);
     this.sortChange = this.sortChange.bind(this);
     this.filterChain = this.filterChain.bind(this);
     this.upSearch = this.upSearch.bind(this);
-  }
 
-  change() {
-    const tl = gsap.timeline({defaults: {ease: this.state.aside ? 'back' : 'expo'}});
-    tl.fromTo('.tlSlide', {transform: 'translateX(0)'}, {transform: 'translateX(110%)', duration: this.state.aside ? .75 : .5, onComplete: () => this.setState({aside: !this.state.aside})});
-    tl.fromTo('.tlSlide', {transform: 'translateX(110%)'}, {transform: 'translateX(0)', duration: this.state.aside ? .5 : 1});
+    this.blogsList = this.blogsList.bind(this);
+    this.find = this.find.bind(this);
   }
 
   keyPress(e) {
     if (e.keyCode === 13) {
-      if (e.target.className === 'aside-x' || e.target.className === 'tlSlide') {
-        this.change();
-      } else if (e.target.className === 'searchTab') {
+      if (e.target.className === 'searchTab') {
         this.upSearch(e);
       }
     }
@@ -53,10 +50,10 @@ class Public extends React.Component {
 
   filterChain(type = '', value = '') {
     if (!type && !value) {
-      return chain;
+      return null;
     }
     // eslint-disable-next-line
-    const filtered = chain.map((obj, i, arr) => {
+    const filtered = null.map((obj, i, arr) => {
       if (arr[i][type] === value) {
         return arr[i];
       }
@@ -68,62 +65,93 @@ class Public extends React.Component {
     this.setState({search: e.target.parentNode.id === 'titleTab' ? true : e.target.id === 'titleTab' ? true : false});
   }
 
-  render() {
-    const chainMap = this.filterChain();
-    const displayChain = chainMap.map((obj, i, arr) => {
-      const user = users.filter(obj => obj.id === arr[i].author)[0];
-      return (<Link to={"/blog/" + arr[i].id} className="blog" key={i} style={this.state.display === 'small' ? {aspectRatio: '1/1'} : this.state.display === 'half' ? {aspectRatio: '2/1'} : {aspectRatio: '3/1'}}>
-        <h3>{arr[i].title}</h3>
-        <div className="bottomMatter">
-          <span>{user.username}</span>
-          <span className="postCount">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-card-text" viewBox="0 0 16 16">
-              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-              <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-            </svg>
-            {arr[i].content.length}
-          </span>
-        </div>
-      </Link>);
-    });
+  blogsList() {
+    BlogDataService.getBlogs()
+      .then(response => {
+        this.setState({ blogs: response.data });
+      })
+      .catch(e => console.log(e));
+  }
 
+  find(search, filter) {
+    const data = search ? 'title' : 'author';
+    BlogDataService.find(filter, data)
+      .then(response => {
+        this.setState({ blogs: response.data });
+      })
+      .catch(e => console.log(e));
+  }
+
+  componentDidMount() {
+    this.setState({maxWidth: this.ref.current.offsetWidth});
+    this.blogsList();
+  }
+
+  render() {
     const style = {backgroundColor: 'tomato', boxShadow: '0 0 2px rgba(0, 0, 0, 0.5)'};
 
-    return (<section id="public-box">
-      {this.state.aside ? (
-        <aside id="public-aside" className="tlSlide">
-          <div className="aside-x" onClick={this.change} onKeyUp={this.keyPress} tabIndex="0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
-              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
+    const header = (<span>Search</span>);
+
+    const content = (<article className="public-art">
+      <form onSubmit={(e) => {e.preventDefault(); this.find(this.state.search, this.state.filter)}}>
+        <section className="radio-btns">
+          <div onClick={this.upSearch} onKeyUp={this.keyPress} className="searchTab" id="titleTab" tabIndex="0">
+            <span style={this.state.search ? style : {}}>Title</span>
           </div>
-          <article>
-            <span>Search</span>
-            <form>
-              <section className="radio-btns">
-                <div onClick={this.upSearch} onKeyUp={this.keyPress} className="searchTab" id="titleTab" tabIndex="0">
-                  <span style={this.state.search ? style : {}}>Title</span>
-                </div>
-                <div onClick={this.upSearch} onKeyUp={this.keyPress} className="searchTab" id="authorTab" tabIndex="0">
-                  <span style={!this.state.search ? style : {}}>Author</span>
-                </div>
-              </section>
-              <input type="text" placeholder={this.state.search ? 'Title' : 'Author'}/>
-            </form>
-          </article>
-        </aside>
-      ) : (
-        <aside id="public-aside-menu" className="tlSlide" onClick={this.change} onKeyUp={this.keyPress} tabIndex="0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-          </svg>
-        </aside>
-      )}
-      <article>
+          <div onClick={this.upSearch} onKeyUp={this.keyPress} className="searchTab" id="authorTab" tabIndex="0">
+            <span style={!this.state.search ? style : {}}>Author</span>
+          </div>
+        </section>
+        <input type="text" placeholder={this.state.search ? 'Title' : 'Author'} value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })}/>
+        <input type="submit"/>
+      </form>
+      <button onClick={() => {this.blogsList(); this.setState({ filter: '' })}}>Reset</button>
+    </article>);
+
+    const logo = (<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
+                    <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                  </svg>);
+
+    return (<section id="public-box">
+      <Aside header={header} content={content} logo={logo} />
+      {this.props.user.username ? (
+        <article style={{maxWidth: this.state.maxWidth}} id="newBlog">
+          <div className="newBlogDiv">
+            <h2>Write Something New...</h2>
+            <p>
+              You've got something brimming on that mind of yours.
+              Why not write about it? Start a new blog here...
+            </p>
+          </div>
+          <Link to={'/create/blog'} className="newBlogBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" className="bi bi-journal-plus" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z"/>
+              <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+              <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+            </svg>
+          </Link>
+        </article>
+      ) : ('')}
+      <article ref={this.ref}>
         <h2>Check This Out</h2>
         <Nav sortChange={this.sortChange} recent={this.state.recent} views={this.state.views} likes={this.state.likes} updateDisplay={(d) => this.setState({display: d})} />
         <div id="view" className={`${this.state.display}-view`}>
-          {displayChain}
+          {this.state.blogs.blogs ? this.state.blogs.blogs.map((obj, i) => {
+            return (<Link to={"/blog/" + obj._id} className="blog" key={i} style={this.state.display === 'small' ? {aspectRatio: '1/1'} : this.state.display === 'half' ? {aspectRatio: '2/1'} : {aspectRatio: '3/1'}}>
+              <h3>{obj.title}</h3>
+              <span className="blogDesc">{obj.text}</span>
+              <div className="bottomMatter">
+                <span>{obj.author}</span>
+                <span className="postCount">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-card-text" viewBox="0 0 16 16">
+                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                    <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                  </svg>
+                  {obj.posts ? obj.posts.length : 0}
+                </span>
+              </div>
+            </Link>);
+          }) : ('')}
         </div>
       </article>
     </section>);

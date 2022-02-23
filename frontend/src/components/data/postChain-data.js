@@ -15,8 +15,8 @@ const posts = [{
 }, {
     id: 3,
     title: 'First Post',
-    description: '',
-    content: '',
+    description: 'Here comes the start of something grand',
+    content: 'I am so excited to be writing this blog! Hello.',
     author: 2,
     blog: 2
 }, {

@@ -1,5 +1,5 @@
 :root {
-  --nav-height: 4em;
+  --nav-height: 4rem;
 }
 
 * {
@@ -29,6 +29,18 @@ main {
   width: 100%;
   background-color: black;
   color: white;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
+.createUser {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: 1rem;
 }
 
 .login-form {
@@ -36,6 +48,10 @@ main {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.login-form > input {
+  user-select: auto;
 }
 
 .login-form label {
@@ -69,6 +85,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 100;
 }
 
 .mainLink {
@@ -89,13 +106,13 @@ main {
 }
 
 .mainWords {
-  padding: 0 .25em;
+  padding: 0 .25rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   color: black;
-  line-height: 1em;
+  line-height: 1rem;
 }
 
 .wordMain {
@@ -118,10 +135,87 @@ main {
 
 #public-box {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   height: 100vh;
   max-width: 100vw;
-  padding: 1em ;
+  padding: 1rem;
+}
+
+/* post blog area */
+
+#newBlog {
+  margin: 1rem 0;
+  padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns: 60% 25%;
+  grid-gap: 10%;
+  align-items: center;
+  background-color: #cccac4c0;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+#newBlog:hover h2::after {
+  left: 0;
+  transition: .5s ease;
+}
+
+.newBlogDiv {
+  padding-top: 10px;
+  overflow: hidden;
+}
+
+.newBlogDiv h2 {
+  position: relative;
+  width: fit-content;
+  line-height: .95rem;
+  margin-bottom: .5rem;
+  z-index: 1;
+}
+
+.newBlogDiv h2::after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: -100%;
+  z-index: -1;
+  border-bottom: 3px solid #fcc159;
+  transition: .5s ease;
+}
+
+.newBlogDiv p {
+  text-indent: .5rem;
+}
+
+.newBlogBtn {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  outline: 4px dashed black;
+  outline-offset: -3px;
+  color: white;
+  border: 2px solid black;
+  background: linear-gradient(#fcc159, #fc8059);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: .2s ease;
+}
+
+.newBlogBtn:hover, .newBlogBtn:focus {
+  background: linear-gradient(#fcc159a0, #fc8059a0);
+  outline: 1px solid white;
+  transition: .2s ease;
+}
+
+.newBlogBtn svg {
+  transition: .5s ease;
+}
+
+.newBlogBtn:hover svg, .newBlogBtn:focus svg {
+  transform: scale(1.5);
+  transition: .5s ease;
 }
 
 /* public nav */
@@ -191,20 +285,31 @@ main {
 }
 
 .blog {
-  margin: 5px;
+  margin: 2px;
   padding: 5px;
-  background: linear-gradient(90deg, tomato 50%, transparent 50%);
+  background: linear-gradient(90deg, #fcc159a0, #fc8059a0 50%, transparent 50%);
   background-size: 200% 100%;
   background-position: 100% 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 10px;
   color: black;
   text-decoration: none;
-  border: 2px solid black;
+  border: 1px solid black;
   box-shadow: inset 0 0 4px rgba(255, 99, 71, 0.7), 0 0 2px rgba(0, 0, 0, 0.5);
   transition: .3s ease;
+}
+
+.full-view .blog {
+  background: linear-gradient(#fcc159a0, #fc8059a0 50%, transparent 50%);
+  background-size: 100% 200%;
+  background-position: 0 100%;
+}
+
+.small-view .blog {
+  background: linear-gradient(135deg, #fcc159a0, #fc8059a0 50%, transparent 50%);
+  background-size: 100% 300%;
+  background-position: 100% 100%;
 }
 
 .blog:hover, .blog:focus {
@@ -218,6 +323,14 @@ main {
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.blogDesc {
+  max-width: fit-content;
+  margin: 5px;
+  padding: 5px;
+  line-height: 1rem;
+  background-color: #cccac4a0;
 }
 
 .bottomMatter {
@@ -246,12 +359,26 @@ main {
   position: fixed;
   top: var(--nav-height);
   right: 0;
-  height: calc(100% - var(--nav-height));
-  max-width: 11.75em;
-  background-color: blanchedalmond;
+  height: 12rem;
+  width: 12rem;
+  margin: 5px;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: #ffce88cc;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
+}
+
+#public-aside header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+#public-aside header span {
+  padding-left: 15px;
 }
 
 .aside-x, #public-aside-menu {
@@ -278,6 +405,7 @@ main {
   background-color: blanchedalmond;
   height: 38px;
   width: 38px;
+  margin: 5px;
   padding: 4px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
@@ -294,17 +422,27 @@ main {
   cursor: pointer;
 }
 
+.public-art input[type="submit"] {
+  margin: 5px;
+  float: left;
+}
+
+.public-art button {
+  margin: 5px;
+  float: right;
+}
+
 /* Blog */
 
 #blog-home {
   min-height: calc(100vh - var(--nav-height));
-  padding: .5em 1em;
+  padding: .5rem 1rem;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 #blog-home h1 {
-  font-size: 3em;
+  font-size: 3rem;
   justify-self: flex-start;
   align-self: flex-start;
 }
@@ -327,7 +465,7 @@ main {
   width: 90%;
   max-width: 90vw;
   aspect-ratio: 2.5 / 1;
-  padding: 0 .5em;
+  padding: 0 .5rem;
   display: flex;
   flex-direction: row;
   border: 2px solid black;
@@ -340,6 +478,7 @@ main {
 }
 
 .post-container {
+  aspect-ratio: 1 / 1.5;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -352,25 +491,121 @@ main {
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
-  background-color: tomato;
+  background-color: #cccac4a0;
   color: black;
   text-decoration: none;
   transition: .5s ease;
+  border: 1px solid black;
+  box-shadow: 0 0 2px black;
+  border-radius: 2px;
 }
 
 .post-link:hover, .post-link:focus {
   transform: translateY(-10px);
+  box-shadow: 0 10px 2px #00000055;
   transition: .2s ease;
 }
 
 .post-link span {
-  font-size: 1.25em;
+  font-size: 1.25rem;
   padding-left: 6px;
   white-space: nowrap;
 }
 
 .post-link p {
-  font-size: .9em;
+  background-color: white;
+  margin-top: 3px;
+  padding: 3px;
+  font-size: .9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Post */
+
+#post-page {
+  padding: 1.5rem;
+}
+
+.topper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#post-page header {
+  background-color: #cccac4a0;
+  margin: .5rem;
+  padding: 5px;
+}
+
+/* Profile */
+
+#profile {
+  height: calc(100vh - var(--nav-height));
+  display: grid;
+  grid-template-columns: 25% 75%;
+}
+
+.profile-aside {
+  background-color: #00000095;
+  display: flex;
+  justify-content: center;
+  box-shadow: inset -2px -2px 5px #ffffffaa, inset 2px 2px 5px #000000aa;
+}
+
+.profile-article {
+  padding: 5px;
+}
+
+/* Create */
+
+#create {
+  min-height: calc(100vh - var(--nav-height));
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#create form {
+  display: flex;
+  flex-direction: column;
+}
+
+.createTitle {
+  font-size: 3rem;
+  padding-left: .25rem;
+  background-color: #cccac4a0;
+  border: none;
+}
+
+#create form > label, .createUser {
+  padding-right: .25rem;
+}
+
+#create form > label {
+  margin-top: .25rem;
+  align-self: flex-end;
+}
+
+#create textarea {
+  margin-top: 1rem;
+  padding: .5rem;
+  background-color: #cccac4a0;
+  border: none;
+  resize: none;
+}
+
+#create input[type="submit"] {
+  margin-top: .5rem;
+  padding: .5rem .8rem;
+  align-self: flex-end;
+  background-color: blue;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
 }
 
 /* media queries */
@@ -379,7 +614,7 @@ main {
   and (min-width: 813px) {
     .login-form input[type="text"], .login-form input[type="password"] {
       padding: 7px 5px 3px;
-      font-size: 1.1em;
+      font-size: 1.1rem;
     }
 
     .post-container {
@@ -395,6 +630,11 @@ main {
 
     #public-aside {
       width: 45%;
+    }
+
+    #newBlog {
+      grid-template-columns: 55% 40%;
+      grid-gap: 5%;
     }
 
     #sort-nav {
@@ -417,5 +657,10 @@ main {
 
     .post-link {
       aspect-ratio: .65 / 1;
+    }
+
+    .createTitle {
+      font-size: 1.85rem;
+      padding-left: .25rem;
     }
   }
