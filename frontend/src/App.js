@@ -30,7 +30,11 @@ class App extends React.Component {
   updateLog(name, pass, create) {
     console.log(name, create);
     if (create) {
-      BlogDataService.createUser({name, pass});
+      BlogDataService.createUser({name, pass})
+      .then(response => {
+        this.setState({ loggedIn: response.data.users[0] });
+      })
+      .catch(e => console.log(e));
     } else {
       const log = gsap.timeline({defaults: {duration: .5, ease: 'power3.out'}});
       log.fromTo('.topBar', {transform: 'translateY(0)', opacity: 1}, {transform: 'translateY(-110%)', opacity: .25, onComplete: () => {

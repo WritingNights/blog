@@ -30,7 +30,7 @@ export default function Navbar(props) {
       </div>
     </Link>
     <div className="loggedBlock">
-      <span>{props.user.username}</span>
+      <span><Link to={`/profile/${props.user.username}`}>{props.user.username}</Link></span>
       <button onClick={() => props.logout('')}>Logout</button>
     </div>
   </nav>);

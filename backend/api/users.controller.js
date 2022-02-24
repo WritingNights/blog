@@ -51,8 +51,9 @@ export default class UsersController {
       const date = new Date()
 
       const exists = await UsersDAO.getUsers(username)
+      console.log(exists)
 
-      if (exists) {
+      if (exists.userList[0]) {
         console.log("User already exists")
       } else {
         const UserResponse = await UsersDAO.addUser(
