@@ -577,36 +577,37 @@ main {
   padding: 6rem 15px;
 }
 
+.blogSpot {
+  display: flex;
+  flex-direction: column;
+}
+
 .blogSpot, .profileInfo {
   width: 90%;
   margin: .5rem auto;
+  padding: 2px;
   border: 1px solid black;
 }
 
-.blogSpot td, .blogSpot a {
-  height: 100%;
-  width: 100%;
-}
-
-.blogSpot tr:nth-child(odd) {
+.blogSpotLink:nth-child(odd) {
   background-color: #fc8059;
 }
 
-.blogSpot a {
+.blogSpotLink {
   text-decoration: none;
   color: black;
   font-weight: 600;
 }
 
-.blogSpot a:hover, .blogSpot a:focus {
+.blogSpotLink:hover, .blogSpotLink:focus {
   outline: 1px solid black;
 }
 
-.blogSpot tr:nth-child(odd) a {
+.blogSpotLink:nth-child(odd) {
   color: black;
 }
 
-.blogSpot td {
+.blogSpotLink {
   padding: 2px;
 }
 

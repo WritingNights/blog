@@ -55,13 +55,11 @@ const Profile = props => {
     </aside>
     <article className="profile-article">
       <h2>{user.username}'s Blogs</h2>
-      <table className="blogSpot">
-        <tbody>
+      <div className="blogSpot">
           {blogs.map((obj, i) => {
-            return <tr key={i}><td><Link to={`/blog/${obj._id}`}>{obj.title}</Link></td></tr>
+            return <Link to={`/blog/${obj._id}`} key={i} className="blogSpotLink">{obj.title}</Link>
           })}
-        </tbody>
-      </table>
+      </div>
         <div className="tableTop">
           <h2>About {user.username}</h2>
           {user.username === props.user.username ? <button onClick={() => alert("This does nothing")}>Edit</button> : ('')}

@@ -42,11 +42,13 @@ const Blog = props => {
               <p>{obj.text}</p>
             </Link>
           </div>)
-        }) : ([]))
+          }) : (<div className="post-container">
+            No posts yet
+          </div>))
       })
       .catch(e => console.log(e));
   };
-  
+
   const bookmark = props.user.bookmarks ? props.user.bookmarks.b.filter(obj => obj === Number(id))[0] : null;
 
   return (<article id="blog-home">
