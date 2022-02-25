@@ -102,7 +102,7 @@ class Public extends React.Component {
             <span style={!this.state.search ? style : {}}>Author</span>
           </div>
         </section>
-        <input type="text" placeholder={this.state.search ? 'Title' : 'Author'} value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })}/>
+        <input type="text" placeholder={this.state.search ? 'Title' : 'Author'} value={this.state.filter} onChange={e => this.setState({ filter: e.target.value })} className="filterInput"/>
         <input type="submit"/>
       </form>
       <button onClick={() => {this.blogsList(); this.setState({ filter: '' })}}>Reset</button>
@@ -132,7 +132,7 @@ class Public extends React.Component {
           </Link>
         </article>
       ) : ('')}
-      <article ref={this.ref}>
+      <article ref={this.ref} className="checkOutBlogs">
         <h2>Check This Out</h2>
         <Nav sortChange={this.sortChange} recent={this.state.recent} views={this.state.views} likes={this.state.likes} updateDisplay={(d) => this.setState({display: d})} />
         <div id="view" className={`${this.state.display}-view`}>

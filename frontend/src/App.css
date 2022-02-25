@@ -19,6 +19,10 @@ main {
   padding-top: var(--nav-height);
 }
 
+input[type="text"], input[type="password"], textarea {
+  user-select: auto;
+}
+
 /* Login */
 
 #login {
@@ -46,13 +50,18 @@ main {
 
 .login-form {
   height: 100%;
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 70% 30%;
+  justify-items: center;
   align-items: center;
 }
 
-.login-form > input {
-  user-select: auto;
+.loginInputs {
+  width: 100%;
+}
+
+.loginInputs > * {
+  width: 50%;
 }
 
 .login-form label {
@@ -273,6 +282,10 @@ main {
 }
 
 /* public view */
+
+.checkOutBlogs {
+  padding-bottom: 5rem;
+}
 
 #view {
   display: grid;
@@ -527,6 +540,14 @@ main {
   text-overflow: ellipsis;
 }
 
+.addPost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 /* Post */
 
 #post-page {
@@ -571,6 +592,11 @@ main {
   background-color: #cccac4a0;
   margin-top: 1rem;
   padding: 5px;
+}
+
+.profile-aside td:nth-child(even) {
+  display: flex;
+  justify-content: center;
 }
 
 .profile-article {
@@ -689,8 +715,14 @@ main {
 
 @media only screen
   and (max-width: 812px) {
-    .login-form input[type="text"], .login-form input[type="password"] {
-      user-select: auto;
+    .loginInputs {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .loginInputs > * {
+      width: 100%;
     }
 
     #public-aside {
@@ -722,6 +754,15 @@ main {
 
     .post-link {
       aspect-ratio: .65 / 1;
+    }
+
+    #profile {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #create form {
+      max-width: 90%;
     }
 
     .createTitle {

@@ -42,9 +42,9 @@ const Blog = props => {
               <p>{obj.text}</p>
             </Link>
           </div>)
-          }) : (<div className="post-container">
+          }) : props.user._id !== blog.user_id ? (<div className="post-container">
             No posts yet
-          </div>))
+          </div>) : (''));
       })
       .catch(e => console.log(e));
   };
@@ -77,7 +77,7 @@ const Blog = props => {
               </svg>
               ) : ('') : ('')
             }
-            <Link to={`/create/post/${id}`} className="post-link">
+            <Link to={`/create/post/${id}`} className="post-link addPost">
               Add Post
             </Link>
           </div>

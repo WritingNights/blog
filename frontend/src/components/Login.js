@@ -25,8 +25,10 @@ class Login extends React.Component {
         <span>{this.state.create ? 'Already have an account?' : 'Create an account'}</span>
       </div>
       <form className="login-form" onSubmit={(e) => {e.preventDefault(); this.props.updateLog(this.state.name, this.state.pass, this.state.create)}}>
-        <input type="text" name="name" placeholder="Username" autoComplete="off" ref={this.ref} value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} required/>
-        <input type="password" name="pass" placeholder="Password" value={this.state.pass} onChange={(e) => this.setState({pass: e.target.value})} required/>
+        <div className="loginInputs">
+          <input type="text" name="name" placeholder="Username" autoComplete="off" ref={this.ref} value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} required/>
+          <input type="password" name="pass" placeholder="Password" value={this.state.pass} onChange={(e) => this.setState({pass: e.target.value})} required/>
+        </div>
         <label style={style}>
           <input type="submit" style={style} value=""/>
           <svg xmlns="http://www.w3.org/2000/svg" width={`${this.state.setVal}px`} height={`${this.state.setVal}px`} fill="currentColor" viewBox="0 0 480.358 480.358" id="loginCheck">
